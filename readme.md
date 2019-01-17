@@ -1,5 +1,5 @@
 # GeoIP2 API
-JSON API service for retrieving info for IP or domain from maxmind's GeoLite2 GeoIP2 database
+JSON API service for retrieving info for IP or domain from maxmind's GeoLite2 and GeoIP2 database
 
 This project was made just for practicing while learning Golang
 

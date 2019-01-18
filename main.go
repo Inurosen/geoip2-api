@@ -18,9 +18,8 @@ const PORT string = "PORT"
 var config configuration.Configuration
 
 func main() {
-	configure()
 	server := config.Get(HOST) + ":" + config.Get(PORT)
-	http.HandleFunc("/", GetIpInfo)
+	http.HandleFunc("/", getIpInfo)
 	fmt.Println("Starting server at " + server)
 	err := http.ListenAndServe(server, nil)
 	if err != nil {
@@ -28,22 +27,7 @@ func main() {
 	}
 }
 
-func configure() {
-	config = configuration.New()
-	config.Set(GEOIP_DB, getenv(GEOIP_DB, "GeoLite2-City.mmdb"))
-	config.Set(HOST, getenv(HOST, "localhost"))
-	config.Set(PORT, getenv(PORT, "7777"))
-}
-
-func getenv(key, fallback string) string {
-	value := os.Getenv(key)
-	if len(value) == 0 {
-		return fallback
-	}
-	return value
-}
-
-func GetIpInfo(w http.ResponseWriter, r *http.Request) {
+func getIpInfo(w http.ResponseWriter, r *http.Request) {
 	query := r.URL.Query().Get("ip")
 	if query == "" {
 		response.Json(w, response.Response{Code: 200, Result: nil, Message: "Missing parameter: ip"})
@@ -77,4 +61,19 @@ func GetIpInfo(w http.ResponseWriter, r *http.Request) {
 
 	response.Json(w, response.Response{Code: 200, Result: ipInfo})
 	return
+}
+
+func init() {
+	config = configuration.New()
+	config.Set(GEOIP_DB, getenv(GEOIP_DB, "GeoLite2-City.mmdb"))
+	config.Set(HOST, getenv(HOST, "localhost"))
+	config.Set(PORT, getenv(PORT, "7777"))
+}
+
+func getenv(key, fallback string) string {
+	value := os.Getenv(key)
+	if len(value) == 0 {
+		return fallback
+	}
+	return value
 }

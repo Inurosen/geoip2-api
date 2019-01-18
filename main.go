@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"geoip/pkg/configuration"
-	"geoip/pkg/geolite"
+	"geoip/pkg/geoip"
 	"geoip/pkg/response"
 	"log"
 	"net"
@@ -67,7 +67,7 @@ func GetIpInfo(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	service := geolite.New(config.Get("GEOIP_DB"))
+	service := geoip.New(config.Get("GEOIP_DB"))
 
 	ipInfo, err := service.GetInfo(ip)
 	if err != nil {

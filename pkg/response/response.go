@@ -3,7 +3,7 @@ package response
 import (
 	"encoding/json"
 	"fmt"
-	"geoip/pkg/geolite"
+	"geoip/pkg/geoip"
 	"log"
 	"net/http"
 )
@@ -21,7 +21,7 @@ func Json(w http.ResponseWriter, response Response) {
 }
 
 type Response struct {
-	Code    int             `json:"-"`
-	Result  *geolite.IpInfo `json:"result"`
-	Message string          `json:"message,omitempty"`
+	Code    int           `json:"-"`
+	Result  *geoip.IpInfo `json:"result"`
+	Message string        `json:"message,omitempty"`
 }

@@ -1,4 +1,4 @@
-package geolite
+package geoip
 
 import (
 	"github.com/oschwald/geoip2-golang"
@@ -22,15 +22,14 @@ func (g GeoLite) GetInfo(ip net.IP) (*IpInfo, error) {
 	}
 	defer db.Close()
 
-	log.Println("IP:", ip)
-
 	info, err := db.City(ip)
+
 	if err != nil {
 		log.Println("db.City: ", err)
 		return nil, err
 	}
 
-	ipInfo := &IpInfo{
+	ipInfo := IpInfo{
 		ip.String(),
 		City{Id: info.City.GeoNameID, Name: info.City.Names["en"]},
 		Continent{Id: info.Continent.GeoNameID, Code: info.Continent.Code, Name: info.Continent.Names["en"]},
@@ -44,7 +43,7 @@ func (g GeoLite) GetInfo(ip net.IP) (*IpInfo, error) {
 		},
 	}
 
-	return ipInfo, nil
+	return &ipInfo, nil
 }
 
 type IpInfo struct {
